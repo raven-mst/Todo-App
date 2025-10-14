@@ -1,7 +1,7 @@
 import React from "react";
-import TodosContainer from "@components/todo_temp/TodosContainer";
+import TodosContainer from "@components/todo/TodosContainer";
 import { useTodosContext } from "@contexts/TodosContext";
-import AddTodo from "@components/todo_temp/AddTodo";
+import AddTodo from "@components/todo/AddTodo";
 
 function HomePage() {
 
