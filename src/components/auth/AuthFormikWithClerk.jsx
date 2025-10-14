@@ -5,7 +5,6 @@ import useForgetPasswordConfig from './hooks/useForgetPasswordConfig';
 import useResetPasswordConfig from './hooks/useResetPasswordConfig';
 import useVerifyEmail from './hooks/useVerifyEmailConfig';
 import FormikInput from "../ui/FormikInput";
-import Button from "../ui/Button";
 import { FaArrowRight, FaSpinner } from "react-icons/fa";
 
 /**
@@ -38,7 +37,7 @@ function AuthFormikWithClerk({ method = "login" }) {
             onSubmit={(values, actions) => config.handleSubmit(values, actions)}
         >
             {(actions) => (
-                <form onSubmit={actions.handleSubmit}>
+                <form onSubmit={actions.handleSubmit} className="md:max-w-[750px] md:mx-auto">
                     {/* Header */}
                     {
                         config.header &&
@@ -66,11 +65,10 @@ function AuthFormikWithClerk({ method = "login" }) {
                     }
 
                     {/* Submit */}
-                    <Button
+                    <button
                         type="submit"
-                        variant="primary"
                         disabled={actions.isSubmitting}
-                        className="w-full flex items-center justify-center gap-2"
+                        className='py-3 px-4 rounded-md font-medium transition bg-[#9e78cf] text-white sm:hover:bg-[#9e78cf]/80 w-full flex items-center justify-center gap-2'
                     >
                         <span>{config.submitBtn}</span>
                         {
@@ -80,7 +78,7 @@ function AuthFormikWithClerk({ method = "login" }) {
                                 <FaArrowRight />
                             )
                         }
-                    </Button>
+                    </button>
 
                     {/* Footer */}
                     {

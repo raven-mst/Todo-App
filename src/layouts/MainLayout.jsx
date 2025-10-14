@@ -3,7 +3,7 @@ import TodosContainer from "@components/todo/TodosContainer";
 import { useTodosContext } from "@contexts/TodosContext";
 import AddTodo from "@components/todo/AddTodo";
 
-function HomePage() {
+function MainLayout() {
 
     const {
         data: {
@@ -13,12 +13,8 @@ function HomePage() {
     } = useTodosContext();
 
     return (
-        <div className="home-page h-screen flex flex-col">
-            <nav className="py-3 bg-[#1d1825] shadow-lg">
-                <div className="container flex items-center justify-between">
-                    Navbar
-                </div>
-            </nav>
+        <div className="main-layout h-full flex flex-col">
+            {/* Main */}
             <main className="h-full flex items-center md:py-10">
                 <div className="container">
                     <div className="todo-app-container bg-[#1d1825] shadow-lg p-5 rounded-3xl md:max-w-[750px] md:mx-auto">
@@ -62,4 +58,4 @@ function HomePage() {
     )
 }
 
-export default HomePage;
+export default MainLayout;

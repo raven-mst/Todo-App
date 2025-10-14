@@ -5,7 +5,7 @@ function CustomCheckbox({ className = "", label = "", ...props }) {
         <label className="custom-checkbox cursor-pointer flex items-center gap-2">
             <input id={props.id || "customCheckboxInput"} type="checkbox" className="hidden peer" {...props} />
             {/* Checkbox */}
-            <div className={`checkbox text-sm w-6 h-6 flex items-center justify-center border border-green-600 text-green-600 rounded-md opacity-80 peer-checked:opacity-100 peer-checked:[&>svg]:scale-100 transition ${className}`}>
+            <div className={`checkbox text-sm w-6 h-6 flex items-center justify-center border border-[#9e78cf] text-[#9e78cf] rounded-md opacity-80 peer-checked:opacity-100 peer-checked:[&>svg]:scale-100 transition ${className}`}>
                 <FaCheck className="scale-0 transition" />
             </div>
             {/* Label */}

@@ -83,11 +83,11 @@ export default function useResetPasswordConfig() {
         header: () => (
             <div className="header mb-5 text-center">
                 <h2 className="font-medium text-2xl mb-3">Reset Password</h2>
-                <p className="text-gray-600">
+                <p className="text-[#0d0714]/50">
                     Enter the verification code sent to your email and choose a new password.{" "}
                     <Link
                         to="/auth/login"
-                        className="text-green-600 font-medium transition sm:hover:text-green-700"
+                        className="text-[#9e78cf] font-medium transition"
                     >
                         Back to Login
                     </Link>

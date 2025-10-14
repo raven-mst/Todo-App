@@ -83,7 +83,7 @@ export default function useLoginConfig() {
             <p>
                 Don't have account?
                 {" "}
-                <Link to={'/auth/signup'} className="text-green-600 font-medium transition sm:hover:text-green-700">Create Account</Link>
+                <Link to={'/auth/signup'} className="text-[#9e78cf] font-medium transition sm:hover:text-[#9e78cf]/80">Create Account</Link>
             </p>
         </div>),
         actions: (actions) => (<div className="actions flex items-center justify-between mb-5">
@@ -96,7 +96,7 @@ export default function useLoginConfig() {
                     onChange={e => actions.setFieldValue("rememberMe", e.target.checked)}
                 />
             </div>
-            <Link to={'/auth/forget-password'} className="font-medium text-green-600 sm:hover:text-green-700 transition">Forget Password</Link>
+            <Link to={'/auth/forget-password'} className="font-medium text-[#9e78cf] transition sm:hover:text-[#9e78cf]/80">Forget Password</Link>
         </div>)
     }
 }

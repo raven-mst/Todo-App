@@ -65,12 +65,11 @@ export default function useForgetPasswordConfig() {
         validationSchema,
         submitBtn: "Send Code",
         header: () => (<div className="header mb-5 text-center">
-            <Link to={'/auth/reset-password'}>Reset Password</Link>
             <h2 className="font-medium text-2xl mb-3">Forget Password</h2>
             <p>
                 Enter OPT Code sended to your Email address or
                 {" "}
-                <Link to={'/auth/login'} className="text-green-600 font-medium transition sm:hover:text-green-700">Back to Login</Link>
+                <Link to={'/auth/login'} className="text-[#9e78cf] font-medium transition">Back to Login</Link>
             </p>
         </div>)
     }
