@@ -19,7 +19,7 @@ function Todo({ todo = { title: "", date: "", complete: false } }) {
     }, [todo.complete, todo.date, updateTodo]);
 
     return (
-        <div className="todo-card bg-[#15101c] text-[#9e78cf] p-3 rounded-lg flex items-center gap-5 sm:gap-7 md:gap-10">
+        <div className="todo-card bg-[#15101c] text-[#7d3bd3] p-3 rounded-lg flex items-center gap-5 sm:gap-7 md:gap-10">
             {/* Todo Title */}
             <p className={`w-full line-clamp-1 ${todo.complete ? "text-[#78cfb0] line-through" : ""}`} title={todo.title}>{todo.title}</p>
             {/* Actions */}

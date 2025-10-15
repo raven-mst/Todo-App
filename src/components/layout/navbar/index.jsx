@@ -22,13 +22,13 @@ function Navbar() {
                         <div className="auth-links flex items-center gap-3">
                             <Link
                                 to={'/auth/login'}
-                                className="font-medium transition bg-[#9e78cf] py-2 px-4 sm:px-6 block rounded-sm"
+                                className="font-medium transition bg-[#7d3bd3] py-2 px-4 sm:px-6 block rounded-sm"
                             >
                                 Login
                             </Link>
                             <Link
                                 to={'/auth/signup'}
-                                className="font-medium max-sm:hidden transition bg-white text-[#9e78cf] py-2 px-4 sm:px-6 block rounded-sm sm:hover:bg-[#9e78cf] sm:hover:text-white"
+                                className="font-medium max-sm:hidden transition bg-white text-[#7d3bd3] py-2 px-4 sm:px-6 block rounded-sm sm:hover:bg-[#9e78cf] sm:hover:text-white"
                             >
                                 Sign Up
                             </Link>

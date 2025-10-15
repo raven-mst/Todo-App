@@ -37,12 +37,12 @@ function AddTodo() {
                 aria-label="Add Todo"
                 onChange={handleChange}
                 placeholder="Add a new todo"
-                className="w-full rounded-xl p-2.5 border border-[#9e78cf] placeholder:text-[#777777]"
+                className="w-full rounded-xl p-2.5 border border-[#7d3bd3] placeholder:text-[#777777]"
             />
             <button
                 title="Add Todo"
                 aria-label="Add Todo"
-                className="w-10 bg-[#9e78cf] flex items-center justify-center rounded-lg shrink-0"
+                className="w-10 bg-[#7d3bd3] flex items-center justify-center rounded-lg shrink-0"
             >
                 <IoMdAdd size={22} />
                 <span className="sr-only"></span>

@@ -68,7 +68,7 @@ function AuthFormikWithClerk({ method = "login" }) {
                     <button
                         type="submit"
                         disabled={actions.isSubmitting}
-                        className='py-3 px-4 rounded-md font-medium transition bg-[#9e78cf] text-white sm:hover:bg-[#9e78cf]/80 w-full flex items-center justify-center gap-2'
+                        className='py-3 px-4 rounded-md font-medium transition bg-[#7d3bd3] text-white sm:hover:bg-[#9e78cf]/80 w-full flex items-center justify-center gap-2'
                     >
                         <span>{config.submitBtn}</span>
                         {

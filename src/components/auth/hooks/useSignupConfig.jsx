@@ -131,7 +131,7 @@ export default function useSignupConfig() {
             <p>
                 Already have account?
                 {" "}
-                <Link to={'/auth/login'} className="text-[#9e78cf] font-medium transition sm:hover:text-[#9e78cf]/80">Login</Link>
+                <Link to={'/auth/login'} className="text-[#7d3bd3] font-medium transition sm:hover:text-[#7d3bd3]/80">Login</Link>
             </p>
         </div>),
         actions: (actions) => (<div className="actions flex items-center justify-between mb-5">

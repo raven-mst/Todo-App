@@ -87,7 +87,7 @@ export default function useResetPasswordConfig() {
                     Enter the verification code sent to your email and choose a new password.{" "}
                     <Link
                         to="/auth/login"
-                        className="text-[#9e78cf] font-medium transition"
+                        className="text-[#7d3bd3] font-medium transition"
                     >
                         Back to Login
                     </Link>

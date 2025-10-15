@@ -69,7 +69,7 @@ export default function useForgetPasswordConfig() {
             <p>
                 Enter OPT Code sended to your Email address or
                 {" "}
-                <Link to={'/auth/login'} className="text-[#9e78cf] font-medium transition">Back to Login</Link>
+                <Link to={'/auth/login'} className="text-[#7d3bd3] font-medium transition">Back to Login</Link>
             </p>
         </div>)
     }
