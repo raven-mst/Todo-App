@@ -25,7 +25,7 @@ function MainLayout() {
                         <div className="not-complete-todos mb-5">
                             {
                                 uncompletedTodos.length === 0 ? (
-                                    <p className="text-center text-[#777777]">No todos added yet</p>
+                                    <p className="text-center text-[#a5a5a5]">No todos added yet</p>
                                 ) : (
                                     <TodosContainer
                                         title={`Tasks to do - ${uncompletedTodos.length}`}
@@ -41,7 +41,7 @@ function MainLayout() {
                             <div className="complete-todos">
                                 {
                                     completedTodos.filter(t => t.complete).length === 0 ? (
-                                        <>No todos completed yet</>
+                                        <p className="text-center text-[#a5a5a5]">No todos completed yet</p>
                                     ) : (
                                         <TodosContainer
                                             title={`Done - ${completedTodos.length}`}
