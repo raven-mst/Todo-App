@@ -13,6 +13,12 @@
             ],
             "@layouts/*": [
                 "src/layouts/*"
+            ],
+            "@utils/*": [
+                "src/utils/*"
+            ],
+            "@modals/*": [
+                "src/modals/*"
             ]
         }
     },

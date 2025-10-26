@@ -3,25 +3,23 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx';
 import './index.css';
 
-// Todos Context
-import { TodosContextProvider } from './contexts/TodosContext.jsx';
 // React Router Dom
 import { BrowserRouter } from 'react-router-dom';
-// Clerk
-import { ClerkProvider } from '@clerk/clerk-react';
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
-if (!PUBLISHABLE_KEY) {
-  throw new Error('Add your Clerk Publishable Key to the .env file')
-}
+// My Context Providers:
+import { AuthContextProvider } from '@contexts/AuthContext.jsx';
+import { TodosContextProvider } from './contexts/TodosContext.jsx';
+import { ModalContextProvider } from '@contexts/ModalContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthContextProvider>
         <TodosContextProvider>
-          <App />
+          <ModalContextProvider>
+            <App />
+          </ModalContextProvider>
         </TodosContextProvider>
-      </BrowserRouter>
-    </ClerkProvider>
+      </AuthContextProvider>
+    </BrowserRouter>
   </StrictMode>,
 )

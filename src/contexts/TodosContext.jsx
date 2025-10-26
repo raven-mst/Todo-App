@@ -1,48 +1,67 @@
 import React from "react";
+import { useAuthContext } from "./AuthContext";
+import { GET_USER_TODOS } from "@utils/api";
 
 const TodosContext = React.createContext();
 
 export const TodosContextProvider = ({ children }) => {
 
-    const [todos, setTodos] = React.useState(JSON.parse(localStorage.getItem("todos")) || []);
+    const { authData } = useAuthContext();
+    const [isLoading, setIsLoading] = React.useState(true);
+    const [todos, setTodos] = React.useState([]);
     const [completedTodos, setCompletedTodos] = React.useState([]);
     const [uncompletedTodos, setUnCompletedTodos] = React.useState([]);
+    const { jwt, user } = authData ? authData : {};
 
-    React.useEffect(() => { // Save to local storage:
-        localStorage.setItem("todos", JSON.stringify(todos));
-    }, [todos]);
-    React.useEffect(() => { // Get completed todos:
-        setCompletedTodos(todos.filter(t => t.complete));
-    }, [todos]);
-    React.useEffect(() => { // Get uncompleted todos:
-        setUnCompletedTodos(todos.filter(t => !t.complete));
+    React.useEffect(() => { // Get User Todos (API):
+        if (!authData) return;
+
+        setIsLoading(true);
+        GET_USER_TODOS({ userId: user?.id, jwt }).then(data => {
+            setTodos(data.data);
+        }).finally(() => {
+            setIsLoading(false);
+        });
+    }, [authData, user?.id, jwt]);
+    React.useEffect(() => { // Extract Todos Data (LOGIC):
+        if (todos.length === 0) {
+            setCompletedTodos([]);
+            setUnCompletedTodos([]);
+        } else {
+            setCompletedTodos(todos.filter(t => t.is_completed));
+            setUnCompletedTodos(todos.filter(t => !t.is_completed));
+        }
     }, [todos]);
 
-    // ## Handlers:
+    // Update Todo:
     const addTodo = React.useCallback((newTodo) => {
-        setTodos(prev => [newTodo, ...prev])
+        setTodos(prev => [newTodo, ...prev]);
     }, []);
-    const deleteTodo = React.useCallback((todoDate) => {
-        setTodos(prev => prev.filter(t => t.date !== todoDate))
+    // Update Todo:
+    const updateTodo = React.useCallback(({ documentId, updatedData }) => {
+        setTodos(prev => prev.map(t => t.documentId === documentId ? { ...t, ...updatedData } : t));
     }, []);
-    const updateTodo = React.useCallback((todoDate, updatedFields) => {
-        setTodos(prev => {
-            return prev.map(t => t.date === todoDate ? t = { ...t, ...updatedFields } : t)
-        })
+    // Delete Todo
+    const deleteTodo = React.useCallback((documentId) => {
+        setTodos(prev => prev.filter(t => t.documentId !== documentId));
+    }, []);
+    // Clear Todo
+    const clearTodos = React.useCallback(() => {
+        setTodos([]);
     }, []);
 
     return (
         <TodosContext.Provider
             value={{
-                data: {
-                    todos,
-                    completedTodos,
-                    uncompletedTodos
-                },
+                isLoading,
+                todos,
+                completedTodos,
+                uncompletedTodos,
                 actions: {
                     addTodo,
+                    updateTodo,
                     deleteTodo,
-                    updateTodo
+                    clearTodos
                 }
             }}
         >
@@ -51,4 +70,5 @@ export const TodosContextProvider = ({ children }) => {
     )
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTodosContext = () => React.useContext(TodosContext);

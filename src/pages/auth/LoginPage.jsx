@@ -1,10 +1,10 @@
-import AuthFormikWithClerk from "../../components/auth/AuthFormikWithClerk";
+import AuthFormik from "@components/auth/AuthFormik";
 
 function LoginPage() {
     return (
-        <div className="login-page w-full py-10">
+        <div className="login-page">
             <div className="container">
-                <AuthFormikWithClerk method="login" />
+                <AuthFormik method="login" />
             </div>
         </div>
     )

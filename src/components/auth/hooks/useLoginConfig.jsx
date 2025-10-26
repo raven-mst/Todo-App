@@ -1,72 +1,80 @@
-import { useSignIn } from "@clerk/clerk-react";
+import { useAuthContext } from "@contexts/AuthContext";
+import { api } from "@utils/api";
 import { Link, useNavigate } from "react-router-dom";
+import { Slide, toast } from "react-toastify";
 import * as Yup from "yup";
-import CustomCheckbox from "../../ui/CustomCheckbox";
 
-const inputList = [
+const inputsList = [
     {
-        id: "email",
-        name: "email",
-        type: "email",
-        label: "Email",
-        autoComplete: "on",
-        placeholder: "Enter your Email Address"
+        id: "identifier",
+        type: "identifier",
+        name: "identifier",
+        autoComplete: 'on',
+        label: "Email Address",
+        placeholder: "Enter your email address"
     },
     {
         id: "password",
-        name: "password",
         type: "password",
+        name: "password",
         label: "Password",
-        placeholder: "Enter your Password"
+        placeholder: "Password"
     }
 ];
 const initialValues = {
-    email: "",
-    password: "",
-    rememberMe: false
+    identifier: "",
+    password: ""
 };
 const validationSchema = Yup.object({
-    email: Yup.string("Email must be a string").email("Email must be a valid Email address").required("Email is Required"),
-    password: Yup.string().required("Password is Required").min(8).max(64),
-    rememberMe: Yup.bool().oneOf([true, false])
+    identifier: Yup.string().email().required("Email is Required"),
+    password: Yup.string().required("Password is Required").min(6)
 });
 
-export default function useLoginConfig() {
+function useLoginConfig() {
 
-    const { signIn, setActive } = useSignIn();
+    const { setAuthData } = useAuthContext();
     const navigate = useNavigate();
 
-    const handleSubmit = async (values, actions) => {
+    const handleSubmit = async ({ values, actions }) => {
 
+        const { identifier, password } = values;
         const { setSubmitting } = actions;
-        const { email, password } = values;
 
         try {
-            const result = await signIn.create({
-                identifier: email,
-                password,
+            const res = await fetch(`${api}/auth/local`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    identifier,
+                    password
+                })
             });
+            const data = await res.json();
 
-            if (result.status === "complete") {
-                await setActive({ session: result.createdSessionId });
-                // Navigate to Home Page
-                navigate('/');
+            if (data.error) {
+                // Show Error Message:
+                toast.error(data.error.message, {
+                    position: "bottom-left",
+                    theme: "dark",
+                    toastId: "toastLoginErrorId",
+                    transition: Slide
+                })
             } else {
-                console.log("Login requires additional steps:", result);
+                // 
+                setAuthData(data);
+                localStorage.setItem('auth', JSON.stringify(data));
+                navigate('/');
+                toast.success(`Welcome back, ${data.user.username}`, {
+                    position: "bottom-left",
+                    theme: "dark",
+                    toastId: "toastLoginErrorId",
+                    transition: Slide
+                })
             }
-
-        } catch (submitError) {
-            if (submitError.errors) {
-                const formikErrors = {};
-                submitError.errors.forEach(error => {
-                    if (error.meta.paramName === "identifier" || error.code === "session_exists") {
-                        formikErrors.email = error.message;
-                    } else {
-                        formikErrors[error.meta.paramName] = error.message
-                    }
-                });
-                actions.setErrors(formikErrors);
-            }
+        } catch (err) {
+            console.log(err);
         } finally {
             setSubmitting(false);
         }
@@ -74,29 +82,28 @@ export default function useLoginConfig() {
 
     return {
         handleSubmit,
-        inputList,
+        inputsList,
         initialValues,
         validationSchema,
-        submitBtn: "Login",
-        header: () => (<div className="header mb-5">
-            <h2 className="font-medium text-2xl mb-3">Login to your account</h2>
-            <p>
-                Don't have account?
-                {" "}
-                <Link to={'/auth/signup'} className="text-[#7d3bd3] font-medium transition sm:hover:text-[#7d3bd3]/80">Create Account</Link>
-            </p>
-        </div>),
-        actions: (actions) => (<div className="actions flex items-center justify-between mb-5">
-            {/* Conditions */}
-            <div className="conditions flex items-center gap-2">
-                <CustomCheckbox
-                    label="Remember Me"
-                    defaultChecked={initialValues.rememberMe}
-                    className={`${actions.errors.rememberMe && "border-red-500"}`}
-                    onChange={e => actions.setFieldValue("rememberMe", e.target.checked)}
-                />
-            </div>
-            <Link to={'/auth/forget-password'} className="font-medium text-[#7d3bd3] transition sm:hover:text-[#7d3bd3]/80">Forget Password</Link>
-        </div>)
+        submitBtnText: "Login",
+        header: () => {
+            return (
+                <div className="header mb-5 md:mb-10">
+                    <h2 className="font-semibold text-xl sm:text-2xl md:text-3xl mb-2">Welcome Back</h2>
+                    <p className="text-white/80 mb-2">Login to your account</p>
+                    <p>
+                        Don't have account?
+                        {" "}
+                        <Link
+                            to={'/auth/signup'}
+                            onClick={() => toast.dismiss("toastLoginErrorId")}
+                            className="text-[#7d3bd3] transition sm:hover:text-[#7d3bd3]/80"
+                        >Signup</Link>
+                    </p>
+                </div>
+            )
+        }
     }
 }
+
+export default useLoginConfig

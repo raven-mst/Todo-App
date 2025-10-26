@@ -1,120 +1,84 @@
+import { useAuthContext } from "@contexts/AuthContext";
+import { api } from "@utils/api";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
-import CustomCheckbox from "../../ui/CustomCheckbox";
-import { useSignUp } from "@clerk/clerk-react";
 
-const inputList = [
+const inputsList = [
     {
-        id: "firstName",
-        name: "firstName",
-        type: "text",
-        label: "First Name",
-        autoComplete: "on",
-        placeholder: "Enter your First Name"
-    },
-    {
-        type: "text",
-        id: "lastName",
-        name: "lastName",
-        label: "Last Name",
-        autoComplete: "on",
-        placeholder: "Enter your Last Name"
+        id: "username",
+        type: "username",
+        name: "username",
+        autoComplete: 'on',
+        label: "Username",
+        placeholder: "Enter your username - ex: mustafa sayed"
     },
     {
         id: "email",
-        name: "email",
         type: "email",
+        name: "email",
         label: "Email",
-        autoComplete: "on",
-        placeholder: "Enter your Email Address"
+        autoComplete: 'on',
+        placeholder: "Email address"
     },
     {
         id: "password",
+        type: "password",
         name: "password",
-        type: "password",
         label: "Password",
-        placeholder: "Enter your Password"
-    },
-    {
-        id: "confirmPassword",
-        name: "confirmPassword",
-        type: "password",
-        label: "Confirm Password",
-        placeholder: "Confirm Password"
+        placeholder: "Password"
     }
 ];
 const initialValues = {
-    firstName: "",
-    lastName: "",
+    username: "",
     email: "",
-    password: "",
-    conditions: true
+    password: ""
 };
 const validationSchema = Yup.object({
-    firstName: Yup.string()
-        .required("First Name is Required")
-        .min(4).max(64),
-    lastName: Yup.string().
-        required("Last Name is Required")
-        .min(4).max(64),
-    email: Yup.string("Email must be a string")
-        .email("Email must be a valid Email address")
-        .required("Email is Required"),
-    password: Yup.string()
-        .required("Password is Required")
-        .min(8).max(64),
-    confirmPassword: Yup.string()
-        .oneOf([Yup.ref('password'), null], "Confirm Password must be match Password")
-        .required("Confirm Password is Required"),
-    conditions: Yup.bool()
-        .oneOf([true]).required("Must be accepts Conditions")
+    username: Yup.string().required("Username is Required").min(3),
+    email: Yup.string().email().required("Email is Required"),
+    password: Yup.string().required("Password is Required").min(6)
 });
 
-export default function useSignupConfig() {
+function useSignupConfig() {
 
+    const { setAuthData } = useAuthContext();
     const navigate = useNavigate();
-    const { signUp, setActive } = useSignUp();
 
-    const handleSubmit = async (values, actions) => {
+    const handleSubmit = async ({ values, actions }) => {
 
+        const { username, email, password } = values;
         const { setSubmitting } = actions;
-        const { firstName, lastName, email, password } = values;
 
         try {
-            const result = await signUp.create({
-                firstName,
-                lastName,
-                emailAddress: email,
-                password
+            const res = await fetch(`${api}/auth/local/register`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password
+                })
             });
+            const data = await res.json();
 
-            if (result.status === 'missing_requirements') {
-                await signUp.prepareEmailAddressVerification({ strategy: "email_code", });
-                // Navigate to Verify Email Page:
-                navigate('/auth/verify-email');
-            } else if (result.status === "complete") {
-                await setActive({ session: result.createdSessionId })
-                // Navigate to Home Page
-                setTimeout(() => {
-                    navigate('/');
-                }, 0)
+            if (data.error) {
+                // Show Error Message:
+                toast.error(data.error.message, {
+                    position: "bottom-left",
+                    theme: "dark",
+                    toastId: "toastSignupErrorId"
+                })
             } else {
-                console.log("Unexpected Error Result");
+                // 
+                setAuthData(data);
+                localStorage.setItem('auth', JSON.stringify(data));
+                navigate('/');
             }
-
-        } catch (submitError) {
-            if (submitError.errors) {
-                console.log(submitError.errors);
-                const formikErrors = {};
-                submitError.errors.forEach(error => {
-                    if (error.meta.paramName === "email_address" || error.code === "session_exists") {
-                        formikErrors.email = error.message;
-                    } else {
-                        formikErrors[error.meta.paramName] = error.message
-                    }
-                });
-                actions.setErrors(formikErrors);
-            }
+        } catch (err) {
+            console.log(err);
         } finally {
             setSubmitting(false);
         }
@@ -122,28 +86,28 @@ export default function useSignupConfig() {
 
     return {
         handleSubmit,
-        inputList,
+        inputsList,
         initialValues,
         validationSchema,
-        submitBtn: "Signup",
-        header: () => (<div className="header mb-5">
-            <h2 className="font-medium text-2xl mb-3">Create account</h2>
-            <p>
-                Already have account?
-                {" "}
-                <Link to={'/auth/login'} className="text-[#7d3bd3] font-medium transition sm:hover:text-[#7d3bd3]/80">Login</Link>
-            </p>
-        </div>),
-        actions: (actions) => (<div className="actions flex items-center justify-between mb-5">
-            {/* Conditions */}
-            <div className="conditions flex items-center gap-2">
-                <CustomCheckbox
-                    defaultChecked={initialValues.conditions}
-                    className={`${actions.errors.conditions && "border-red-500"}`}
-                    onChange={e => actions.setFieldValue("conditions", e.target.checked)}
-                />
-                <p className="font-medium">Accept Conditions and Privacy Terms</p>
-            </div>
-        </div>)
+        submitBtnText: "Create Account",
+        header: () => {
+            return (
+                <div className="header mb-5 md:mb-10">
+                    <h2 className="font-semibold text-xl sm:text-2xl md:text-3xl mb-2">Create Account</h2>
+                    <p className="text-white/80 mb-2">Login to your account</p>
+                    <p>
+                        Already have account?
+                        {" "}
+                        <Link
+                            to={'/auth/login'}
+                            onClick={() => toast.dismiss("toastSignupErrorId")}
+                            className="text-[#7d3bd3] transition sm:hover:text-[#7d3bd3]/80"
+                        >Login</Link>
+                    </p>
+                </div>
+            )
+        },
     }
-};
+}
+
+export default useSignupConfig

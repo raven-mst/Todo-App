@@ -1,4 +1,4 @@
-import Todo from "./Todo";
+import Todo from "./components/Todo";
 
 function TodosContainer({ title = "", todos = [] }) {
     return (
@@ -8,7 +8,7 @@ function TodosContainer({ title = "", todos = [] }) {
             <div className="todos-list space-y-2 max-h-[30vh] overflow-y-auto">
                 {
                     todos.map(todo => (<Todo
-                        key={todo.date}
+                        key={todo.id}
                         todo={todo}
                     />))
                 }
