@@ -1,10 +1,10 @@
 # ✅ Todo App
 
-A modern and responsive **Todo App** built with **React.js** and **Tailwind CSS**, designed to help users organize and manage their daily tasks efficiently.  
-This project features **authentication with Clerk**, and uses **local storage** to save todos — no backend required.
+A full-stack **Todo Application** built with **React.js**, **Tailwind CSS**, and **Strapi CMS**, designed to help users efficiently manage their daily tasks with real user authentication and persistent data storage.
 
-🔗 **Live Demo:** [https://todo-app-eight-lilac-81.vercel.app/](https://todo-app-eight-lilac-81.vercel.app/)  
-🎨 **Figma Design:** [View on Figma](https://www.figma.com/design/oYssuor0PY462obfA7QbtR/Todo-App--Community-?node-id=0-1&t=1GPKr65oKXSDG5sN-0)
+- 🔗 **Live Demo:** [https://todo-app-eight-lilac-81.vercel.app/](https://todo-app-eight-lilac-81.vercel.app/)
+- 🎨 **Figma Design:** [View on Figma](https://www.figma.com/design/oYssuor0PY462obfA7QbtR/Todo-App--Community-?node-id=0-1&t=1GPKr65oKXSDG5sN-0)
+- 🗂 **Backend Repo (Strapi):** [https://github.com/raven-mst/Todo-App_Strapi](https://github.com/raven-mst/Todo-App_Strapi)
 
 ---
 
@@ -15,22 +15,27 @@ This project features **authentication with Clerk**, and uses **local storage** 
   - [🚀 Features](#-features)
   - [🧠 Tech Stack](#-tech-stack)
   - [📂 Project Structure](#-project-structure)
+    - [Frontend (`/client`)](#frontend-client)
+    - [Backend (`/server`)](#backend-server)
   - [⚙️ Installation \& Setup](#️-installation--setup)
-  - [🧩 Notes](#-notes)
-  - [🏆 Performance](#-performance)
-  - [👨‍💻 Author](#-author)
-  - [📜 License](#-license)
+    - [1️⃣ Clone the repository](#1️⃣-clone-the-repository)
+    - [2️⃣ Setup Backend (Strapi)](#2️⃣-setup-backend-strapi)
+    - [3️⃣ Setup Frontend (React)](#3️⃣-setup-frontend-react)
+    - [🧩 Notes](#-notes)
+    - [🏆 Performance](#-performance)
+    - [👨‍💻 Author](#-author)
+    - [📜 License](#-license)
 
 ---
 
 ## 🚀 Features
 
-- 🔐 **User Authentication** powered by [Clerk](https://clerk.com/)
-- 🧾 **Form Validation** using **Formik** + **Yup**
-- 💾 **Local Storage** integration (no external database)
-- 💡 **Clean and Responsive UI** built with **Tailwind CSS**
-- ⚡ **Optimized Performance** with **Vite**
-- 🌙 **Dark Modern Theme** inspired by the Figma community design
+- 🔐 **User Authentication** powered by **Strapi**
+- 🧾 **Create, Read, Update, and Delete Todos** (CRUD)
+- 💾 **Persistent Storage** in Strapi’s default **SQLite database**
+- 💡 **Modern and Responsive UI** built with **Tailwind CSS**
+- ⚡ **Optimized Frontend Performance** using **Vite**
+- 🌙 **Dark and Clean Design** inspired by Figma community templates
 - ✅ **Lighthouse Scores:**
   - **Desktop:** Performance 100 / Accessibility 100 / Best Practices 100 / SEO 100
   - **Mobile:** Performance 97 / Accessibility 100 / Best Practices 100 / SEO 100
@@ -39,71 +44,89 @@ This project features **authentication with Clerk**, and uses **local storage** 
 
 ## 🧠 Tech Stack
 
-| Technology            | Purpose                        |
-| --------------------- | ------------------------------ |
-| **React.js (v19)**    | Frontend UI library            |
-| **Vite**              | Fast build tool                |
-| **Tailwind CSS (v4)** | Styling and responsive design  |
-| **Formik + Yup**      | Form management and validation |
-| **Clerk**             | Authentication                 |
-| **React Router v7**   | Client-side routing            |
-| **React Icons**       | UI icons set                   |
+| Technology            | Purpose                          |
+| --------------------- | -------------------------------- |
+| **React.js (v19)**    | Frontend UI library              |
+| **Vite**              | Fast build tool                  |
+| **Tailwind CSS (v4)** | Styling and responsive design    |
+| **Formik + Yup**      | Form management and validation   |
+| **Strapi (v5)**       | Backend CMS & API for todos/auth |
+| **SQLite**            | Default database for Strapi      |
+| **React Router v7**   | Client-side routing              |
+| **React Icons**       | UI icons set                     |
 
 ---
 
 ## 📂 Project Structure
 
+### Frontend (`/client`)
+
     src/
     ├── components/ # Reusable UI components
-    ├── contexts/ # Context providers
-    ├── layouts/ # Main layout components
-    ├── pages/ # Application pages (Home, Auth, etc.)
+    ├── contexts/ # Context providers (Auth, Todos)
+    ├── layouts/ # Layout components
+    ├── pages/ # Pages (Home, Login, Signup, etc.)
+    ├── utils/ # API helpers & constants
     ├── App.jsx # Root component with routes
-    ├── main.jsx # App entry point
+    ├── main.jsx # Entry point
     └── index.css # Global styles
+
+### Backend (`/server`)
+
+    src/
+    ├── api/
+    │ └── todo/ # Todo collection type (CRUD)
+    ├── extensions/
+    └── config/
+    ├── database.js
+    └── server.js
 
 ---
 
 ## ⚙️ Installation & Setup
 
-1. **Clone the repository**
+### 1️⃣ Clone the repository
 
-   ```bash
-   git clone https://github.com/your-username/Todo-App.git
-   cd Todo-App
-   ```
+```bash
+git clone https://github.com/your-username/Todo-App.git
+cd Todo-App
+```
 
-2. Install dependencies
+### 2️⃣ Setup Backend (Strapi)
 
-   ```bash
-   npm install
-   ```
+```bash
+cd server
+npm install
+npm run develop
+```
 
-3. Start the development server
+### 3️⃣ Setup Frontend (React)
 
-   ```bash
-   npm run dev
-   ```
+```bash
+cd ../client
+npm install
+npm run dev
+```
 
-4. Open in your browser
+4️⃣ Access the App
 
-   ```bash
-   http://localhost:5173/
-   ```
-
----
-
-## 🧩 Notes
-
-Todos are saved in the browser’s local storage — no backend or API used.
-
-The authentication is real using Clerk, but user data is not connected to a database.
-
-Built mainly to demonstrate frontend logic, UI, and React ecosystem integration.
+```bash
+Frontend: http://localhost:5173/
+Backend (Strapi Admin): http://localhost:1337/admin
+```
 
 ---
 
-## 🏆 Performance
+### 🧩 Notes
+
+- The project now uses Strapi CMS as a full backend for both authentication and todo management.
+- Users can sign up, log in, and manage their todos (add, edit, delete).
+- Data is persisted in Strapi’s SQLite database.
+- This project focuses on combining a modern React frontend with a powerful headless CMS backend.
+
+---
+
+### 🏆 Performance
 
 Achieved **perfect Lighthouse scores** on desktop and **near-perfect on mobile** 💪  
 This confirms that the app is **highly optimized, accessible, and SEO-friendly.**
@@ -117,13 +140,13 @@ This confirms that the app is **highly optimized, accessible, and SEO-friendly.*
 
 ---
 
-## 👨‍💻 Author
+### 👨‍💻 Author
 
 Mustafa Sayed
 Front-End Developer | React.js & TailwindCSS
 
 ---
 
-## 📜 License
+### 📜 License
 
 This project is open-source and available under the MIT License.
